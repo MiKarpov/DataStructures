@@ -1,5 +1,7 @@
 package com.mikhailkarpov.sort;
 
+import com.mikhailkarpov.util.ArraysUtils;
+
 public class BubbleSort {
 
     public static <T extends Comparable<T>> void sort(T[] array) {

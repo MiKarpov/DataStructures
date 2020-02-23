@@ -1,4 +1,4 @@
-package com.mikhailkarpov.sort;
+package com.mikhailkarpov.util;
 
 public class ArraysUtils {
 
