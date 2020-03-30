@@ -1,33 +1,118 @@
 package com.mikhailkarpov.list;
 
+import com.mikhailkarpov.dto.Employee;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
 public class SinglyLinkedListTest {
 
+    private SinglyLinkedList<Employee> employees;
+    private Employee testEmployee = new Employee(1, "Mike");
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        employees = new SinglyLinkedList<>();
     }
 
     @Test
-    public void addToFront() {
+    public void afterConstructionShouldBeEmpty() {
+        assertTrue(employees.isEmpty());
+        assertEquals(0, employees.size());
+
+        Iterator<Employee> iterator = employees.iterator();
+
+        assertNotNull(iterator);
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
     }
 
     @Test
-    public void isEmpty() {
+    public void addToFrontShouldStoreElementAndIncreaseSize() {
+        employees.addToFront(testEmployee);
+
+        assertFalse(employees.isEmpty());
+        assertEquals(1, employees.size());
+
+        Iterator<Employee> iterator = employees.iterator();
+
+        assertNotNull(iterator);
+        assertTrue(iterator.hasNext());
+        assertEquals(testEmployee, iterator.next());
     }
 
     @Test
-    public void removeFromFront() {
+    public void afterMultipleAddToFrontShouldStoreElementsAndIncreaseSize() {
+        populateEmployees();
+
+        assertFalse(employees.isEmpty());
+        assertEquals(6, employees.size());
+
+        Iterator<Employee> iterator = employees.iterator();
+
+        assertNotNull(iterator);
+        for (int i = 0; i < 6; i++) {
+            assertTrue(iterator.hasNext());
+            assertNotNull(iterator.next());
+        }
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
+    }
+
+    private void populateEmployees() {
+        employees.addToFront(testEmployee);
+        employees.addToFront(new Employee(2, "Andrew"));
+        employees.addToFront(new Employee(3, "Andrew"));
+        employees.addToFront(new Employee(4, "Andrew"));
+        employees.addToFront(new Employee(5, "Andrew"));
+        employees.addToFront(new Employee(6, "Andrew"));
     }
 
     @Test
-    public void size() {
+    public void removeFromFrontShouldReturnElementAndDecreaseSize() {
+        employees.addToFront(testEmployee);
+
+        assertEquals(testEmployee, employees.removeFromFront());
+        assertTrue(employees.isEmpty());
+        assertEquals(0, employees.size());
+
+        Iterator<Employee> iterator = employees.iterator();
+
+        assertNotNull(iterator);
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
     }
 
     @Test
-    public void iterator() {
+    public void multipleRemoveFromFrontShouldAdjustSizeAndIterator() {
+        populateEmployees();
+
+        assertFalse(employees.isEmpty());
+        assertEquals(6, employees.size());
+
+        for (int i = 6; i > 0; i--) {
+            assertEquals(i, employees.size());
+            Iterator<Employee> iterator = employees.iterator();
+            assertTrue(iterator.hasNext());
+
+            Employee nextEmployee = iterator.next();
+            Employee removedEmployee = employees.removeFromFront();
+
+            assertNotNull(removedEmployee);
+            assertEquals(nextEmployee, removedEmployee);
+            assertEquals(i, removedEmployee.getId());
+        }
+
+        assertTrue(employees.isEmpty());
+        assertEquals(0, employees.size());
+
+        Iterator<Employee> iterator = employees.iterator();
+
+        assertNotNull(iterator);
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
     }
 }
