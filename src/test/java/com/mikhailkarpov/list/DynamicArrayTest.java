@@ -1,4 +1,4 @@
-package com.mikhailkarpov.array;
+package com.mikhailkarpov.list;
 
 import org.junit.Before;
 import org.junit.Test;

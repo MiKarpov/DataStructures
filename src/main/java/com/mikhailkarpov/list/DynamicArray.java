@@ -1,4 +1,4 @@
-package com.mikhailkarpov.array;
+package com.mikhailkarpov.list;
 
 public class DynamicArray<T> {
 
