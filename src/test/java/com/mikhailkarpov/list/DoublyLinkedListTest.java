@@ -8,14 +8,14 @@ import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
-public class DoubleLinkedListTest {
+public class DoublyLinkedListTest {
 
-    private DoubleLinkedList<Employee> employees;
+    private DoublyLinkedList<Employee> employees;
     private Employee testEmployee = new Employee(1, "Mike");
 
     @Before
     public void setUp() {
-        employees = new DoubleLinkedList<>();
+        employees = new DoublyLinkedList<>();
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.mikhailkarpov.list;
 
 import java.util.Iterator;
 
-public class DoubleLinkedList<E> implements Iterable<E> {
+public class DoublyLinkedList<E> implements Iterable<E> {
 
     private Node<E> head;
     private Node<E> tail;
