@@ -70,6 +70,7 @@ public class DoublyLinkedListTest {
         assertEquals(6, employees.size());
 
         Iterator<Employee> iterator = employees.iterator();
+        System.out.println(employees);
 
         assertNotNull(iterator);
         for (int i = 6; i > 0; i--) {
@@ -100,6 +101,7 @@ public class DoublyLinkedListTest {
         assertEquals(6, employees.size());
 
         Iterator<Employee> iterator = employees.iterator();
+        System.out.println(employees);
 
         assertNotNull(iterator);
         for (int i = 1; i <= 6; i++) {
@@ -157,6 +159,8 @@ public class DoublyLinkedListTest {
 
         assertFalse(employees.isEmpty());
         assertEquals(6, employees.size());
+
+        System.out.println(employees);
 
         for (int i = 6; i > 0; i--) {
             assertEquals(i, employees.size());

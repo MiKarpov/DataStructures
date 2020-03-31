@@ -83,24 +83,40 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-
-            Node<E> currentNode = head;
+            Node<E> pointer = head;
 
             @Override
             public boolean hasNext() {
-                return currentNode != null;
+                return pointer != null;
             }
 
             @Override
             public E next() {
-                Node<E> nextNode = currentNode;
-                if (currentNode == null)
+                Node<E> nextNode = pointer;
+                if (pointer == null)
                     return null;
 
-                currentNode = currentNode.nextElement;
+                pointer = pointer.nextElement;
                 return nextNode.element;
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[ ");
+
+        Node<E> pointer = head;
+        while (pointer != null) {
+            sb.append(pointer.element);
+            pointer = pointer.nextElement;
+            if (pointer != null) {
+                sb.append(" <=> ");
+            }
+        }
+
+        sb.append(" ]");
+        return sb.toString();
     }
 
     private class Node<E> {
@@ -111,6 +127,11 @@ public class DoublyLinkedList<E> implements Iterable<E> {
 
         public Node (E e) {
             this.element = e;
+        }
+
+        @Override
+        public String toString() {
+            return element.toString();
         }
     }
 }

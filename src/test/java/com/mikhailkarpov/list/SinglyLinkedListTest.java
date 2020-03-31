@@ -1,6 +1,7 @@
 package com.mikhailkarpov.list;
 
 import com.mikhailkarpov.dto.Employee;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,12 @@ public class SinglyLinkedListTest {
         employees = new SinglyLinkedList<>();
     }
 
+    @After
+    public void logEmployee() {
+        System.out.println("Employees:" + employees);
+        System.out.println("Size: " + employees.size());
+    }
+
     @Test
     public void afterConstructionShouldBeEmpty() {
         assertTrue(employees.isEmpty());
@@ -28,8 +35,6 @@ public class SinglyLinkedListTest {
         assertNotNull(iterator);
         assertFalse(iterator.hasNext());
         assertNull(iterator.next());
-
-        assertNull(employees.removeFirst());
     }
 
     @Test
@@ -38,6 +43,8 @@ public class SinglyLinkedListTest {
 
         assertFalse(employees.isEmpty());
         assertEquals(1, employees.size());
+        assertTrue(employees.contains(testEmployee));
+        assertEquals(0, employees.indexOf(testEmployee));
 
         Iterator<Employee> iterator = employees.iterator();
 
@@ -54,6 +61,8 @@ public class SinglyLinkedListTest {
 
         assertFalse(employees.isEmpty());
         assertEquals(6, employees.size());
+        assertTrue(employees.contains(testEmployee));
+        assertEquals(5, employees.indexOf(testEmployee));
 
         Iterator<Employee> iterator = employees.iterator();
 
@@ -82,6 +91,8 @@ public class SinglyLinkedListTest {
         assertEquals(testEmployee, employees.removeFirst());
         assertTrue(employees.isEmpty());
         assertEquals(0, employees.size());
+        assertFalse(employees.contains(testEmployee));
+        assertEquals(-1, employees.indexOf(testEmployee));
 
         Iterator<Employee> iterator = employees.iterator();
 
@@ -104,6 +115,8 @@ public class SinglyLinkedListTest {
 
             Employee nextEmployee = iterator.next();
             Employee removedEmployee = employees.removeFirst();
+            assertFalse(employees.contains(removedEmployee));
+            assertEquals(-1, employees.indexOf(removedEmployee));
 
             assertNotNull(removedEmployee);
             assertEquals(nextEmployee, removedEmployee);
@@ -118,5 +131,58 @@ public class SinglyLinkedListTest {
         assertNotNull(iterator);
         assertFalse(iterator.hasNext());
         assertNull(iterator.next());
+    }
+
+    @Test
+    public void testClear() {
+        populateEmployees();
+
+        employees.clear();
+
+        assertTrue(employees.isEmpty());
+        assertEquals(0, employees.size());
+        assertFalse(employees.contains(testEmployee));
+        assertEquals(-1, employees.indexOf(testEmployee));
+
+        Iterator<Employee> iterator = employees.iterator();
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
+    }
+
+    @Test
+    public void testAddAt() {
+        populateEmployees();
+        Employee addedEmployee = new Employee(7, "addedEmployee");
+        employees.addAt(0, addedEmployee);
+
+        assertEquals(7, employees.size());
+        assertTrue(employees.contains(addedEmployee));
+        assertEquals(0, employees.indexOf(addedEmployee));
+        assertEquals(6, employees.indexOf(testEmployee));
+
+        addedEmployee = new Employee(8, "oneMoreAddedEmployee");
+        employees.addAt(7, addedEmployee);
+
+        assertEquals(8, employees.size());
+        assertTrue(employees.contains(addedEmployee));
+        assertEquals(7, employees.indexOf(addedEmployee));
+
+        addedEmployee = new Employee(9, "anotherAddedEmployee");
+        employees.addAt(3, addedEmployee);
+
+        assertEquals(9, employees.size());
+        assertTrue(employees.contains(addedEmployee));
+        assertEquals(3, employees.indexOf(addedEmployee));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addAtNegativeIndexShouldThrowException() {
+        employees.addAt(-1, testEmployee);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addAtInvalidIndexShouldThrowException() {
+        populateEmployees();
+        employees.addAt(7, testEmployee);
     }
 }
