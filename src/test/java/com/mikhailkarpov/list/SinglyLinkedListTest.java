@@ -31,8 +31,8 @@ public class SinglyLinkedListTest {
     }
 
     @Test
-    public void addToFrontShouldStoreElementAndIncreaseSize() {
-        employees.addToFront(testEmployee);
+    public void addFirstShouldStoreElementAndIncreaseSize() {
+        employees.addFirst(testEmployee);
 
         assertFalse(employees.isEmpty());
         assertEquals(1, employees.size());
@@ -42,10 +42,12 @@ public class SinglyLinkedListTest {
         assertNotNull(iterator);
         assertTrue(iterator.hasNext());
         assertEquals(testEmployee, iterator.next());
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
     }
 
     @Test
-    public void afterMultipleAddToFrontShouldStoreElementsAndIncreaseSize() {
+    public void afterMultipleAddFirstShouldStoreElementsAndIncreaseSize() {
         populateEmployees();
 
         assertFalse(employees.isEmpty());
@@ -63,19 +65,19 @@ public class SinglyLinkedListTest {
     }
 
     private void populateEmployees() {
-        employees.addToFront(testEmployee);
-        employees.addToFront(new Employee(2, "Andrew"));
-        employees.addToFront(new Employee(3, "Andrew"));
-        employees.addToFront(new Employee(4, "Andrew"));
-        employees.addToFront(new Employee(5, "Andrew"));
-        employees.addToFront(new Employee(6, "Andrew"));
+        employees.addFirst(testEmployee);
+        employees.addFirst(new Employee(2, "Andrew"));
+        employees.addFirst(new Employee(3, "Andrew"));
+        employees.addFirst(new Employee(4, "Andrew"));
+        employees.addFirst(new Employee(5, "Andrew"));
+        employees.addFirst(new Employee(6, "Andrew"));
     }
 
     @Test
-    public void removeFromFrontShouldReturnElementAndDecreaseSize() {
-        employees.addToFront(testEmployee);
+    public void removeFirstShouldReturnElementAndDecreaseSize() {
+        employees.addFirst(testEmployee);
 
-        assertEquals(testEmployee, employees.removeFromFront());
+        assertEquals(testEmployee, employees.removeFirst());
         assertTrue(employees.isEmpty());
         assertEquals(0, employees.size());
 
@@ -99,7 +101,7 @@ public class SinglyLinkedListTest {
             assertTrue(iterator.hasNext());
 
             Employee nextEmployee = iterator.next();
-            Employee removedEmployee = employees.removeFromFront();
+            Employee removedEmployee = employees.removeFirst();
 
             assertNotNull(removedEmployee);
             assertEquals(nextEmployee, removedEmployee);

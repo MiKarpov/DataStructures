@@ -7,9 +7,9 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     private Node<E> head;
     private int size;
 
-    public void addToFront(E e) {
+    public void addFirst(E e) {
         Node<E> node = new Node<>(e);
-        node.setNext(head);
+        node.setNextElement(head);
         head = node;
         size++;
     }
@@ -18,12 +18,12 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         return head == null;
     }
 
-    public E removeFromFront() {
+    public E removeFirst() {
         if (isEmpty())
             return null;
 
         E removedElement = head.getElement();
-        head = head.next;
+        head = head.nextElement;
         size--;
 
         return removedElement;
@@ -50,7 +50,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
                 if (currentNode == null)
                     return null;
 
-                currentNode = currentNode.getNext();
+                currentNode = currentNode.getNextElement();
                 return nextNode.getElement();
             }
         };
@@ -59,7 +59,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     private class Node<E> {
 
         private final E element;
-        private Node<E> next;
+        private Node<E> nextElement;
 
         public Node (E e) {
             this.element = e;
@@ -69,12 +69,12 @@ public class SinglyLinkedList<E> implements Iterable<E> {
             return element;
         }
 
-        public Node<E> getNext() {
-            return next;
+        public Node<E> getNextElement() {
+            return nextElement;
         }
 
-        public void setNext(Node<E> next) {
-            this.next = next;
+        public void setNextElement(Node<E> nextElement) {
+            this.nextElement = nextElement;
         }
     }
 }
