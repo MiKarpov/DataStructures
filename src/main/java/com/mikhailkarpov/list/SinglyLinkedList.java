@@ -9,7 +9,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 
     public void addFirst(E e) {
         Node<E> node = new Node<>(e);
-        node.setNextElement(head);
+        node.nextElement = head;
         head = node;
         size++;
     }
@@ -22,11 +22,12 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         if (isEmpty())
             return null;
 
-        E removedElement = head.getElement();
+        Node<E> removedNode = head;
         head = head.nextElement;
+        removedNode.nextElement = null;
         size--;
 
-        return removedElement;
+        return removedNode.element;
     }
 
     public int size() {
@@ -50,8 +51,8 @@ public class SinglyLinkedList<E> implements Iterable<E> {
                 if (currentNode == null)
                     return null;
 
-                currentNode = currentNode.getNextElement();
-                return nextNode.getElement();
+                currentNode = currentNode.nextElement;
+                return nextNode.element;
             }
         };
     }
@@ -63,18 +64,6 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 
         public Node (E e) {
             this.element = e;
-        }
-
-        public E getElement() {
-            return element;
-        }
-
-        public Node<E> getNextElement() {
-            return nextElement;
-        }
-
-        public void setNextElement(Node<E> nextElement) {
-            this.nextElement = nextElement;
         }
     }
 }

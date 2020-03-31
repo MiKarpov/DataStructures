@@ -28,6 +28,8 @@ public class SinglyLinkedListTest {
         assertNotNull(iterator);
         assertFalse(iterator.hasNext());
         assertNull(iterator.next());
+
+        assertNull(employees.removeFirst());
     }
 
     @Test
@@ -89,7 +91,7 @@ public class SinglyLinkedListTest {
     }
 
     @Test
-    public void multipleRemoveFromFrontShouldAdjustSizeAndIterator() {
+    public void multipleRemoveFirstShouldAdjustSizeAndIterator() {
         populateEmployees();
 
         assertFalse(employees.isEmpty());
