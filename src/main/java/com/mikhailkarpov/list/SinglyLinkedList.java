@@ -229,7 +229,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         return sb.toString();
     }
 
-    private class Node<E> {
+    private static class Node<E> {
 
         private E element;
         private Node<E> nextNode;
