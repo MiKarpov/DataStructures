@@ -174,6 +174,26 @@ public class DoublyLinkedListTest {
     }
 
     @Test
+    public void testSet() {
+        employees.addFirst(testEmployee1);
+        employees.add(1, testEmployee2);
+        employees.addLast(testEmployee3);
+
+        employees.set(0, testEmployee3);
+        employees.set(1, testEmployee1);
+        employees.set(2, testEmployee2);
+
+        assertEquals(3, employees.size());
+        assertTrue(employees.contains(testEmployee1));
+        assertTrue(employees.contains(testEmployee2));
+        assertTrue(employees.contains(testEmployee3));
+
+        assertEquals(testEmployee3, employees.get(0));
+        assertEquals(testEmployee1, employees.get(1));
+        assertEquals(testEmployee2, employees.get(2));
+    }
+
+    @Test
     public void testIterator() {
         employees.addFirst(testEmployee1);
         employees.add(1, testEmployee2);

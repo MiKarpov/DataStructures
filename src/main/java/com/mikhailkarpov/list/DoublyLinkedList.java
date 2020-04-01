@@ -84,10 +84,10 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     }
 
     private Node<E> getNode(int index) {
+        throwExceptionIfEmpty();
+
         if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException("Invalid index: " + index);
-        else if (isEmpty())
-            throw new RuntimeException("List is empty");
         else if (index == 0)
             return head;
         else if (index == size() - 1)
@@ -140,9 +140,7 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     }
 
     public E remove(int index) {
-        if (isEmpty()) {
-            throw new RuntimeException("Removal failed. List is empty.");
-        }
+        throwExceptionIfEmpty();
 
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("Illegal index: " + index);
@@ -171,44 +169,49 @@ public class DoublyLinkedList<E> implements Iterable<E> {
         return removedElement;
     }
 
+    private void throwExceptionIfEmpty() {
+        if (isEmpty()) throw new RuntimeException("Empty list");
+    }
+
     public E removeFirst() {
-        if (isEmpty())
-            return null;
+        throwExceptionIfEmpty();
 
-        Node<E> removedNode = head;
-
-        if (head.nextNode == null) { // If removing the only element in the list, then the list is empty now
-            head = null;
-            tail = null;
-        } else {                        // Adjusting head
-            head = head.nextNode;
-            head.previousNode = null;
-        }
+        E removed = head.element;
+        head = head.nextNode;
         size--;
 
-        E removedElement = removedNode.element;
-        LOGGER.info("First element {} removed", removedElement);
-        return removedElement;
+        if (isEmpty()) {
+            head = null;    // probably not necessary, because head has been already set to null
+            tail = null;
+        } else {
+            head.previousNode = null;
+        }
+
+        LOGGER.info("First element {} removed", removed);
+        return removed;
     }
 
     public E removeLast() {
-        if (isEmpty())
-            return null;
+        if (isEmpty()) throw new RuntimeException("Empty list");
 
-        Node<E> removedNode = tail;
-
-        if (tail.previousNode == null) { // If removing the only element in the list, then the list is empty now
-            head = null;
-            tail = null;
-        } else {                            // Adjusting tail
-            tail = tail.previousNode;
-            tail.nextNode = null;
-        }
+        E removed = tail.element;
+        tail = tail.previousNode;
         size--;
 
-        E removedElement = removedNode.element;
-        LOGGER.info("Last element {} removed", removedElement);
-        return removedElement;
+        if (isEmpty()) {
+            tail = null;    // probably not necessary, because tail has been already set to null
+            head = null;
+        } else {
+            tail.nextNode = null;
+        }
+
+        LOGGER.info("Last element {} removed", removed);
+        return removed;
+    }
+
+    public void set(int index, E e) {
+        Node<E> replacedNode = getNode(index);
+        replacedNode.element = e;
     }
 
     public int size() {

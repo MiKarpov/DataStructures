@@ -82,17 +82,21 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     }
 
     public E getFirst() {
-        if (isEmpty())
-            throw new RuntimeException("List is empty");
+        throwExceptionIfEmpty();
 
         E element = head.element;
         LOGGER.info("First element fetched: " + element);
         return element;
     }
 
-    public E get(int index) {
+    private void throwExceptionIfEmpty() {
         if (isEmpty())
-            throw new RuntimeException("Removing failed. List is empty");
+            throw new RuntimeException("List is empty");
+    }
+
+    public E get(int index) {
+        throwExceptionIfEmpty();
+
         if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException("Invalid index: " + index);
         else if (index == 0)
@@ -106,45 +110,35 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     }
 
     public E remove(int index) {
-        if (isEmpty())
-            throw new RuntimeException("Removing failed. List is empty");
+        throwExceptionIfEmpty();
+
         if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException("Invalid index: " + index);
         else if (index == 0) {
             return removeFirst();
         }
 
-        Node<E> removedNode = head;
-        Node<E> previousNode = null;
-        for (int i = 1; i <= index; i++) {
-            previousNode = removedNode;
-            removedNode = removedNode.nextNode;
+        Node<E> pointer = head;
+        for (int i = 1; i < index; i++) {
+            pointer = pointer.nextNode;
         }
+        E removedElement = pointer.nextNode.element;
+        pointer.nextNode = pointer.nextNode.nextNode;
 
-        E removedElement = removedNode.element;
-        previousNode.nextNode = removedNode.nextNode;
-        removedNode.nextNode = null;
         size--;
-
         LOGGER.info("Removing element {} at index {}", removedElement, index);
         return removedElement;
     }
 
     public E removeFirst() {
-        if (isEmpty()) {
-            String errMsg = "List is empty. Removing failed";
-            LOGGER.warn(errMsg);
-            throw new RuntimeException(errMsg);
-        }
+        throwExceptionIfEmpty();
 
-        Node<E> removedNode = head;
+        E removed = head.element;
         head = head.nextNode;
-        removedNode.nextNode = null;
         size--;
 
-        E removedElement = removedNode.element;
-        LOGGER.info("Removing first element: " + removedElement);
-        return removedElement;
+        LOGGER.info("Removed first: " + removed);
+        return removed;
     }
 
     public boolean set(int index, E e) {
