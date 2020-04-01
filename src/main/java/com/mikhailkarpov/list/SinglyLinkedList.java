@@ -15,14 +15,14 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     public void addFirst(E e) {
         LOGGER.info("Add first element: " + e);
         Node<E> node = new Node<>(e);
-        node.nextElement = head;
+        node.nextNode = head;
         head = node;
         size++;
     }
 
     public void addAt(int index, E e) {
         if (index < 0 || index > size()) {
-            throw new IllegalArgumentException("Illegal index: " + index);
+            throw new IndexOutOfBoundsException("Illegal index: " + index);
         }
         else if (index == 0) {
             addFirst(e);
@@ -31,11 +31,11 @@ public class SinglyLinkedList<E> implements Iterable<E> {
             LOGGER.info("Adding element {} at index {}", e, index);
             Node<E> pointer = head;
             for (int i = 0; i < index - 1; i++) {
-                pointer = pointer.nextElement;
+                pointer = pointer.nextNode;
             }
             Node<E> newNode = new Node<>(e);
-            newNode.nextElement = pointer.nextElement;
-            pointer.nextElement = newNode;
+            newNode.nextNode = pointer.nextNode;
+            pointer.nextNode = newNode;
             size++;
         }
     }
@@ -43,9 +43,9 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     public void clear() {
         LOGGER.info("Clear list");
         for (Node<E> pointer = head; pointer != null; ) {
-            Node<E> next = pointer.nextElement;
+            Node<E> next = pointer.nextNode;
             pointer.element = null;
-            pointer.nextElement = null;
+            pointer.nextNode = null;
             pointer = next;
         }
         head = null;
@@ -84,6 +84,55 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         return size() == 0;
     }
 
+    public E getFirst() {
+        if (isEmpty())
+            throw new RuntimeException("Removing the first element failed. List is empty");
+
+        E removedElement = head.element;
+        LOGGER.info("First element removed: " + removedElement);
+        return removedElement;
+    }
+
+    public E get(int index) {
+        if (isEmpty())
+            throw new RuntimeException("Removing failed. List is empty");
+        if (index < 0 || index >= size())
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        else if (index == 0)
+            return head.element;
+
+        Node<E> resultNode = head;
+        for (int i = 1; i <= index; i++) {
+            resultNode = resultNode.nextNode;
+        }
+        return resultNode.element;
+    }
+
+    public E remove(int index) {
+        if (isEmpty())
+            throw new RuntimeException("Removing failed. List is empty");
+        if (index < 0 || index >= size())
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        else if (index == 0) {
+            return removeFirst();
+        }
+
+        Node<E> removedNode = head;
+        Node<E> previousNode = null;
+        for (int i = 1; i <= index; i++) {
+            previousNode = removedNode;
+            removedNode = removedNode.nextNode;
+        }
+
+        E removedElement = removedNode.element;
+        previousNode.nextNode = removedNode.nextNode;
+        removedNode.nextNode = null;
+        size--;
+
+        LOGGER.info("Removing element {} at index {}", removedElement, index);
+        return removedElement;
+    }
+
     public E removeFirst() {
         if (isEmpty()) {
             String errMsg = "List is empty. Removing failed";
@@ -92,8 +141,8 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         }
 
         Node<E> removedNode = head;
-        head = head.nextElement;
-        removedNode.nextElement = null;
+        head = head.nextNode;
+        removedNode.nextNode = null;
         size--;
 
         E removedElement = removedNode.element;
@@ -122,7 +171,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
                 if (currentNode == null)
                     return null;
 
-                currentNode = currentNode.nextElement;
+                currentNode = currentNode.nextNode;
                 return nextNode.element;
             }
         };
@@ -138,7 +187,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         Node<E> pointer = head;
         while (pointer != null) {
             sb.append(pointer.element);
-            pointer = pointer.nextElement;
+            pointer = pointer.nextNode;
             if (pointer != null) {
                 sb.append(" => ");
             }
@@ -151,7 +200,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     private class Node<E> {
 
         private E element;
-        private Node<E> nextElement;
+        private Node<E> nextNode;
 
         public Node (E e) {
             this.element = e;

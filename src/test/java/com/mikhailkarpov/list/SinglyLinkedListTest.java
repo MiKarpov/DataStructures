@@ -133,6 +133,29 @@ public class SinglyLinkedListTest {
         assertNull(iterator.next());
     }
 
+    @Test (expected = RuntimeException.class)
+    public void removeAtInvalidIndexShouldThrowException() {
+        populateEmployees();
+        employees.remove(6);
+    }
+
+    @Test
+    public void removeShouldAdjustList() {
+        populateEmployees();
+        Employee removedEmployee = employees.remove(5);
+
+        assertFalse(employees.contains(removedEmployee));
+        assertEquals(1, removedEmployee.getId());
+        assertEquals(5, employees.size());
+
+        System.out.println(employees);
+
+        removedEmployee = employees.remove(2);
+        assertFalse(employees.contains(removedEmployee));
+        assertEquals(4, removedEmployee.getId());
+        assertEquals(4, employees.size());
+    }
+
     @Test
     public void testClear() {
         populateEmployees();
@@ -175,14 +198,45 @@ public class SinglyLinkedListTest {
         assertEquals(3, employees.indexOf(addedEmployee));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void addAtNegativeIndexShouldThrowException() {
         employees.addAt(-1, testEmployee);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void addAtInvalidIndexShouldThrowException() {
         populateEmployees();
         employees.addAt(7, testEmployee);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getInvalidIndexShouldThrowException() {
+        populateEmployees();
+        employees.get(6);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getIfNegativeIndexThrowException() {
+        populateEmployees();
+        employees.get(-1);
+    }
+
+    @Test
+    public void testGet() {
+        employees.addFirst(new Employee(2, "2"));
+        employees.addFirst(new Employee(1, "1"));
+        employees.addFirst(new Employee(0, "0"));
+        for (int i = 0; i < employees.size(); i++) {
+            assertEquals(i, employees.get(i).getId());
+        }
+    }
+
+    @Test
+    public void getFirstShouldReturnFirstElement() {
+        populateEmployees();
+        Employee first = employees.getFirst();
+
+        assertNotNull(first);
+        assertEquals(6, first.getId());
     }
 }
