@@ -3,6 +3,7 @@ package com.mikhailkarpov.list;
 import com.mikhailkarpov.dto.Employee;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -238,5 +239,47 @@ public class SinglyLinkedListTest {
 
         assertNotNull(first);
         assertEquals(6, first.getId());
+    }
+
+    @Test
+    public void setInEmptyListShouldAddElement() {
+        assertTrue(employees.set(0, testEmployee));
+        assertFalse(employees.isEmpty());
+        assertTrue(employees.contains(testEmployee));
+        assertEquals(1, employees.size());
+        assertEquals(testEmployee, employees.get(0));
+    }
+
+    @Test
+    public void setAtIndexShouldEditList() {
+        populateEmployees();
+        Employee employee = new Employee(7, "7");
+
+        assertTrue(employees.set(3, employee));
+        assertTrue(employees.contains(employee));
+        assertEquals(6, employees.size());
+        assertEquals(employee, employees.get(3));
+
+        System.out.println(employee);
+
+        Employee anotherEmployee = new Employee(8, "8");
+
+        assertTrue(employees.set(3, anotherEmployee));
+        assertTrue(employees.contains(anotherEmployee));
+        assertEquals(6, employees.size());
+        assertEquals(anotherEmployee, employees.get(3));
+
+        assertFalse(employees.contains(employee));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void setIllegalIndexAtEmptyListShouldThrowException() {
+        employees.set(1, testEmployee);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void setIllegalIndexShouldThrowException() {
+        populateEmployees();
+        employees.set(7, testEmployee);
     }
 }

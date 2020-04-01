@@ -86,11 +86,11 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 
     public E getFirst() {
         if (isEmpty())
-            throw new RuntimeException("Removing the first element failed. List is empty");
+            throw new RuntimeException("List is empty");
 
-        E removedElement = head.element;
-        LOGGER.info("First element removed: " + removedElement);
-        return removedElement;
+        E element = head.element;
+        LOGGER.info("First element fetched: " + element);
+        return element;
     }
 
     public E get(int index) {
@@ -149,6 +149,38 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         LOGGER.info("Removing first element: " + removedElement);
         return removedElement;
     }
+
+    public boolean set(int index, E e) {
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("Illegal index: " + index);
+        }
+        else if(isEmpty() && index == 0) {
+            addFirst(e);
+            return true;
+        }
+
+        if (index == 0) {
+            Node<E> newNode = new Node<>(e);
+            newNode.nextNode = head.nextNode;
+            head = newNode;
+        }
+        else {
+            Node<E> newNode = new Node<>(e);
+            Node<E> pointer = head;
+            Node<E> previousNode = null;
+            for (int i = 1; i <= index; i++) {
+                previousNode = pointer;
+                pointer = pointer.nextNode;
+            }
+            previousNode.nextNode = newNode;
+            newNode.nextNode = pointer.nextNode;
+            pointer.nextNode = null;
+            pointer = null;
+        }
+        LOGGER.info("Set {} at index {}", e, index);
+        return true;
+    }
+
 
     public int size() {
         return size;

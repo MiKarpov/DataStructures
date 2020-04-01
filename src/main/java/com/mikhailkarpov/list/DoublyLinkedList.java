@@ -8,6 +8,10 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     private Node<E> tail;
     private int size;
 
+    public void add(int index, E e) {
+
+    }
+
     public void addFirst(E e) {
         Node<E> node = new Node<>(e);
         node.nextElement = head;
@@ -34,6 +38,18 @@ public class DoublyLinkedList<E> implements Iterable<E> {
 
         tail = node;
         size++;
+    }
+
+    public void clear() {
+
+    }
+
+    public boolean contains(E e) {
+        return false;
+    }
+
+    public int indexOf(E e) {
+        return -1;
     }
 
     public boolean isEmpty() {
