@@ -13,11 +13,9 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     private int size;
 
     public void addFirst(E e) {
-        LOGGER.info("Add first element: " + e);
-        Node<E> node = new Node<>(e);
-        node.nextNode = head;
-        head = node;
+        head = new Node<>(e, head);
         size++;
+        LOGGER.info("Add first: " + e);
     }
 
     public void addAt(int index, E e) {
@@ -33,8 +31,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
             for (int i = 0; i < index - 1; i++) {
                 pointer = pointer.nextNode;
             }
-            Node<E> newNode = new Node<>(e);
-            newNode.nextNode = pointer.nextNode;
+            Node<E> newNode = new Node<>(e, pointer.nextNode);
             pointer.nextNode = newNode;
             size++;
         }
@@ -160,27 +157,18 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         }
 
         if (index == 0) {
-            Node<E> newNode = new Node<>(e);
-            newNode.nextNode = head.nextNode;
-            head = newNode;
+            head = new Node<>(e, head);
         }
         else {
-            Node<E> newNode = new Node<>(e);
             Node<E> pointer = head;
-            Node<E> previousNode = null;
-            for (int i = 1; i <= index; i++) {
-                previousNode = pointer;
+            for (int i = 1; i < index; i++) {
                 pointer = pointer.nextNode;
             }
-            previousNode.nextNode = newNode;
-            newNode.nextNode = pointer.nextNode;
-            pointer.nextNode = null;
-            pointer = null;
+            pointer.nextNode = new Node<>(e, pointer.nextNode.nextNode);
         }
         LOGGER.info("Set {} at index {}", e, index);
         return true;
     }
-
 
     public int size() {
         return size;
@@ -235,7 +223,12 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         private Node<E> nextNode;
 
         public Node (E e) {
-            this.element = e;
+            this(e, null);
+        }
+
+        public Node(E element, Node<E> nextNode) {
+            this.element = element;
+            this.nextNode = nextNode;
         }
     }
 }

@@ -26,12 +26,9 @@ public class DoublyLinkedList<E> implements Iterable<E> {
         }
 
         Node<E> nodeAtIndex = getNode(index);
-        Node<E> newNode = new Node<>(e);
+        Node<E> newNode = new Node<>(e, nodeAtIndex.previousNode, nodeAtIndex);
 
         nodeAtIndex.previousNode.nextNode = newNode;
-        newNode.previousNode = nodeAtIndex.previousNode;
-
-        newNode.nextNode = nodeAtIndex;
         nodeAtIndex.previousNode = newNode;
 
         size++;
@@ -39,34 +36,30 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     }
 
     public void addFirst(E e) {
-        LOGGER.info("Add first element: " + e);
-        Node<E> node = new Node<>(e);
-        node.nextNode = head;
-
         if (isEmpty()) {
-            tail = node;
+            head = new Node<>(e, null, null);
+            tail = head;
         } else {
-            head.previousNode = node;
+            Node<E> newHead = new Node<>(e, null, head);
+            head.previousNode = newHead;
+            head = newHead;
         }
-
-        head = node;
         size++;
+        LOGGER.info("Add first element: " + e);
     }
 
     public void addLast(E e) {
-        LOGGER.info("Add last element: " + e);
-
-        Node<E> node = new Node<>(e);
-        node.previousNode = tail;
-
         if (isEmpty()) {
-            head = node;
-        } else {
-            tail.nextNode = node;
+            head = new Node<>(e, null, null);
+            tail = head;
         }
-
-        tail = node;
+        else {
+            Node<E> newNode = new Node<>(e, tail, null);
+            tail.nextNode = newNode;
+            tail = newNode;
+        }
         size++;
+        LOGGER.info("Add last element: " + e);
     }
 
     public void clear() {
@@ -264,14 +257,23 @@ public class DoublyLinkedList<E> implements Iterable<E> {
         return sb.toString();
     }
 
+    /**
+     * Internal class to represent data
+     */
     private static class Node<E> {
 
         private E element;
-        private Node<E> nextNode;
         private Node<E> previousNode;
+        private Node<E> nextNode;
 
         public Node (E e) {
             this.element = e;
+        }
+
+        public Node(E element, Node<E> previousNode, Node<E> nextNode) {
+            this.element = element;
+            this.previousNode = previousNode;
+            this.nextNode = nextNode;
         }
 
         @Override

@@ -3,7 +3,6 @@ package com.mikhailkarpov.list;
 import com.mikhailkarpov.dto.Employee;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -260,7 +259,7 @@ public class SinglyLinkedListTest {
         assertEquals(6, employees.size());
         assertEquals(employee, employees.get(3));
 
-        System.out.println(employee);
+        System.out.println("Employees: " + employees);
 
         Employee anotherEmployee = new Employee(8, "8");
 
